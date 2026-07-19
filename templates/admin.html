@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block title %}管理员面板 - 用户管理系统{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h2 class="card-title">管理员面板</h2>
+    <p class="card-text" style="margin-top: 20px;">欢迎进入管理员面板，当前用户：{{ username }}</p>
+    <p class="card-text" style="margin-top: 12px; color: #888; font-size: 13px;">仅 admin 角色可访问此页面。</p>
+    <a href="{{ url_for('index') }}" class="btn btn-primary" style="width: 100%; text-align: center;">返回首页</a>
+</div>
+{% endblock %}
