@@ -20,3 +20,19 @@ Thumbs.db
 
 # Flask
 instance/
+
+# 数据库
+*.db
+data/
+
+# 报告（保留自己的报告，排除其他人的）
+waf_fuzz_report.*
+我的SQL注入漏洞测试与修复报告.md
+sqli_fix_report.md
+
+# 备份
+*.bak
+vulnerable_backup/
+
+# 缓存
+*.tmp

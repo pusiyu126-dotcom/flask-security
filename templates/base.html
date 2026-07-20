@@ -8,13 +8,17 @@
 </head>
 <body>
     <nav class="navbar">
-        <div class="nav-brand">用户管理系统</div>
+        <div class="nav-brand">
+            <a href="{{ url_for('index') }}" style="color:#fff; text-decoration:none;">用户管理系统</a>
+        </div>
         <div class="nav-menu">
-            {% if session.get('user') %}
-                <span class="nav-welcome">欢迎，{{ session['user'] }}</span>
+            <a href="{{ url_for('search') }}" class="nav-link">搜索</a>
+            {% if session.get('username') %}
+                <span class="nav-welcome">欢迎，{{ session['username'] }}</span>
                 <a href="{{ url_for('logout') }}" class="nav-link">退出</a>
             {% else %}
                 <a href="{{ url_for('login') }}" class="nav-link">登录</a>
+                <a href="{{ url_for('register') }}" class="nav-link">注册</a>
             {% endif %}
         </div>
     </nav>
