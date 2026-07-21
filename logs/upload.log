@@ -1,0 +1,5 @@
+2026-07-21 04:05:43,895 | [上传成功] 用户=admin 原始文件=test.png 保存为=f6718c1f113c4ba98d5952db391688d3.png 大小=67字节 MIME=image/png IP=127.0.0.1
+2026-07-21 04:05:43,903 | [拦截-MIME] 用户=admin 文件=evil.jpg MIME=image/jpeg (发现可疑代码: <?php) IP=127.0.0.1
+2026-07-21 04:05:43,912 | [拦截-MIME] 用户=admin 文件=evil.png MIME=image/png (发现可疑代码: <?php) IP=127.0.0.1
+2026-07-21 04:05:43,921 | [拦截-后缀] 用户=admin 文件=s.php IP=127.0.0.1
+2026-07-21 04:05:43,928 | [拦截-MIME] 用户=admin 文件=fake.jpg MIME=text/x-php IP=127.0.0.1

@@ -1,0 +1,6 @@
+# 安全配置：禁止上传目录解析可执行脚本
+<FilesMatch "\.(php|phtml|php3|php4|php5|php7|php8|inc|shtml|asp|aspx|jsp|py|pl|cgi|sh|exe|bat|cmd)$">
+    Require all denied
+</FilesMatch>
+Options -ExecCGI
+RemoveHandler .php .phtml .php3 .php4 .php5 .php7 .php8

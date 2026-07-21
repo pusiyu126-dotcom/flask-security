@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block title %}上传头像 - 用户管理系统{% endblock %}
+
+{% block content %}
+<div class="card login-card">
+    <h2 class="card-title">上传头像</h2>
+
+    {% if error %}
+        <div class="error-msg">{{ error }}</div>
+    {% endif %}
+
+    {% if success %}
+        <div style="background:#e6f7e6; color:#27ae60; padding:10px 14px; border-radius:6px; font-size:14px; margin-bottom:18px; border:1px solid #b3e6b3;">
+            上传成功！
+        </div>
+        <div style="text-align:center; margin-bottom:16px;">
+            <img src="{{ file_url }}" alt="头像预览" style="max-width:200px; max-height:200px; border-radius:8px; border:2px solid #eee;">
+        </div>
+        <p style="text-align:center; font-size:13px;">
+            文件名：{{ filename }}<br>
+            <a href="{{ file_url }}" target="_blank" style="color:#667eea;">打开文件</a>
+        </p>
+        <a href="{{ url_for('upload') }}" class="btn btn-primary" style="margin-top:16px; text-align:center; display:block;">继续上传</a>
+    {% else %}
+    <form method="post" action="{{ url_for('upload') }}" enctype="multipart/form-data" class="login-form">
+        <div class="form-group">
+            <label for="file">选择头像文件</label>
+            <input type="file" id="file" name="file" class="form-input" style="padding:8px;" accept="image/*" required>
+        </div>
+        <p style="font-size:12px; color:#888; margin-bottom:12px;">支持格式：JPG、PNG、GIF、WebP、BMP（最大 16MB）</p>
+        <button type="submit" class="btn btn-primary">上 传</button>
+    </form>
+    {% endif %}
+</div>
+{% endblock %}
