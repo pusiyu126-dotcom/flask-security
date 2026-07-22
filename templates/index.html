@@ -20,9 +20,14 @@
                     <td class="info-label">手机</td>
                     <td class="info-value">{{ user.phone }}</td>
                 </tr>
+                <tr>
+                    <td class="info-label">余额</td>
+                    <td class="info-value">¥ {{ "%.2f"|format(user.balance / 100) }}</td>
+                </tr>
             </table>
         </div>
-        <a href="{{ url_for('upload') }}" class="btn btn-primary" style="margin-top:12px; text-align:center; display:block;">上传头像</a>
+        <a href="{{ url_for('profile') }}?user_id={{ user.id }}" class="btn btn-primary" style="margin-top:12px; text-align:center; display:block;">个人中心</a>
+        <a href="{{ url_for('upload') }}" class="btn btn-primary" style="margin-top:8px; text-align:center; display:block;">上传头像</a>
         <a href="{{ url_for('logout') }}" class="btn btn-logout">退出登录</a>
     </div>
 

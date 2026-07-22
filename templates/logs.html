@@ -1,20 +1,32 @@
 {% extends "base.html" %}
 
-{% block title %}上传审计日志 - 用户管理系统{% endblock %}
+{% block title %}审计日志 - 用户管理系统{% endblock %}
 
 {% block content %}
 <div class="card" style="max-width: 900px; margin: 0 auto;">
-    <h2 class="card-title">📋 上传审计日志</h2>
-    <p style="color:#888; font-size:13px; margin-bottom:16px;">仅管理员可见 | 最近 100 条记录</p>
+    <h2 class="card-title">📋 审计日志</h2>
+    <p style="color:#888; font-size:13px; margin-bottom:16px;">仅管理员可见 | 各显示最近 100 条记录</p>
 
+    <h3 style="font-size:15px; margin:16px 0 8px 0;">📤 上传操作日志</h3>
     {% if logs %}
-    <div style="background:#1e1e1e; color:#d4d4d4; padding:16px; border-radius:8px; font-family:'Consolas','Courier New',monospace; font-size:12px; line-height:1.8; max-height:600px; overflow-y:auto;">
+    <div style="background:#1e1e1e; color:#d4d4d4; padding:16px; border-radius:8px; font-family:'Consolas','Courier New',monospace; font-size:12px; line-height:1.8; max-height:300px; overflow-y:auto; margin-bottom:16px;">
         {% for line in logs %}
         <div>{{ line }}</div>
         {% endfor %}
     </div>
     {% else %}
-    <p style="color:#888;">暂无日志记录。</p>
+    <p style="color:#888; margin-bottom:16px;">暂无上传日志记录。</p>
+    {% endif %}
+
+    <h3 style="font-size:15px; margin:16px 0 8px 0;">🔐 越权与充值操作日志</h3>
+    {% if biz_logs %}
+    <div style="background:#1e1e1e; color:#d4d4d4; padding:16px; border-radius:8px; font-family:'Consolas','Courier New',monospace; font-size:12px; line-height:1.8; max-height:300px; overflow-y:auto;">
+        {% for line in biz_logs %}
+        <div>{{ line }}</div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <p style="color:#888;">暂无业务操作日志记录。</p>
     {% endif %}
 
     <a href="{{ url_for('index') }}" class="btn btn-primary" style="margin-top:16px; text-align:center; display:block;">返回首页</a>

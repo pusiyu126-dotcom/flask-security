@@ -16,6 +16,9 @@
             {% if session.get('username') %}
                 <span class="nav-welcome">欢迎，{{ session['username'] }}</span>
                 <a href="{{ url_for('upload') }}" class="nav-link">上传头像</a>
+                <a href="{{ url_for('profile') }}" class="nav-link">个人中心</a>
+                {% if session.get('username') == 'admin' %}
+                <a href="{{ url_for('admin_panel') }}" class="nav-link">管理面板</a>
                 {% if session.get('username') == 'admin' %}
                 <a href="{{ url_for('view_logs') }}" class="nav-link">审计日志</a>
                 {% endif %}
