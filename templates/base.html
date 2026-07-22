@@ -19,7 +19,6 @@
                 <a href="{{ url_for('profile') }}" class="nav-link">个人中心</a>
                 {% if session.get('username') == 'admin' %}
                 <a href="{{ url_for('admin_panel') }}" class="nav-link">管理面板</a>
-                {% if session.get('username') == 'admin' %}
                 <a href="{{ url_for('view_logs') }}" class="nav-link">审计日志</a>
                 {% endif %}
                 <a href="{{ url_for('logout') }}" class="nav-link">退出</a>
