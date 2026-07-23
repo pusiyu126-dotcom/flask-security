@@ -13,6 +13,7 @@
         </div>
         <div class="nav-menu">
             <a href="{{ url_for('search') }}" class="nav-link">搜索</a>
+            <a href="{{ url_for('dynamic_page') }}?name=help" class="nav-link">帮助中心</a>
             {% if session.get('username') %}
                 <span class="nav-welcome">欢迎，{{ session['username'] }}</span>
                 <a href="{{ url_for('upload') }}" class="nav-link">上传头像</a>

@@ -83,4 +83,11 @@
         <a href="{{ url_for('login') }}" class="btn btn-primary">前往登录</a>
     </div>
 {% endif %}
+
+{% if page_content is defined and page_content %}
+<div class="card">
+    <h2 class="card-title">📄 页面内容</h2>
+    <div style="font-size:14px; line-height:1.8;">{{ page_content }}</div>
+</div>
+{% endif %}
 {% endblock %}

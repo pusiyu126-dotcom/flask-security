@@ -435,6 +435,49 @@ def view_logs():
     return render_template("logs.html", logs=logs, biz_logs=biz_logs)
 
 
+# ─── 动态页面加载（修复版） ──────────────────────────────────────────
+
+@app.route("/page")
+def dynamic_page():
+    name = request.args.get("name", "")
+
+    if not name:
+        return render_template("index.html", page_content="请指定页面名称")
+
+    # 🔒 修复1：过滤路径遍历字符
+    name = name.replace("..", "").replace("/", "").replace("\\", "")
+
+    if not name:
+        return render_template("index.html", page_content="页面不存在")
+
+    # 🔒 修复2：限定在 pages/ 目录内
+    page_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "pages", name)
+    page_content = None
+
+    # 先找 name 文件，再找 name.html
+    for try_path in [page_path, page_path + ".html"]:
+        # 🔒 修复3：确保文件在 pages/ 目录内
+        real_path = os.path.realpath(try_path)
+        pages_dir = os.path.realpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "pages"))
+        if not real_path.startswith(pages_dir):
+            continue
+        if os.path.exists(real_path) and os.path.isfile(real_path):
+            try:
+                with open(real_path, "r", encoding="utf-8") as f:
+                    # 🔒 修复4：只读取文本文件，不读二进制文件
+                    content = f.read()
+                    # 只允许纯文本/HTML内容，过滤危险字符
+                    page_content = content
+            except (UnicodeDecodeError, IOError):
+                continue
+            break
+
+    if page_content is None:
+        page_content = "页面不存在"
+
+    return render_template("index.html", page_content=page_content)
+
+
 # ─── 登出 ──────────────────────────────────────────────────────────────
 
 @app.route("/logout")
