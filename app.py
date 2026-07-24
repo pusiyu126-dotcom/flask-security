@@ -320,7 +320,10 @@ def profile():
         return render_template("profile.html", user=None, error="用户不存在")
 
     user_data = dict(row)
-    return render_template("profile.html", user=user_data)
+    # 生成 CSRF Token（用于修改密码表单）
+    csrf_token = secrets.token_hex(16)
+    session["csrf_token"] = csrf_token
+    return render_template("profile.html", user=user_data, csrf_token=csrf_token)
 
 
 # ─── 充值（修复：登录校验 + 自己充 + 金额正数 + 上限 + 异常处理） ─
@@ -478,25 +481,39 @@ def dynamic_page():
     return render_template("index.html", page_content=page_content)
 
 
-# ─── 修改密码（含漏洞：无原密码校验 / 无 CSRF / 可改他人密码） ──
+# ─── 修改密码（修复版） ──────────────────────────────────────────────
 
 @app.route("/change-password", methods=["POST"])
 def change_password():
-    # 只需登录即可
     if "username" not in session:
         return redirect("/login")
 
     username = request.form.get("username", "")
+    old_password = request.form.get("old_password", "")
     new_password = request.form.get("new_password", "")
+    csrf_token = request.form.get("csrf_token", "")
 
-    if not username or not new_password:
+    # 🔒 修复1：校验 CSRF Token
+    stored_token = session.pop("csrf_token", None)
+    if not stored_token or csrf_token != stored_token:
         return redirect("/profile")
 
-    # ❌ 漏洞1：不校验原密码
-    # ❌ 漏洞2：不校验 session 用户与提交的 username 是否一致
-    # ❌ 漏洞3：无 CSRF Token 校验
+    # 🔒 修复2：校验 session 用户与提交的用户名一致（防越权）
+    if username != session["username"]:
+        return redirect("/profile")
+
+    if not new_password or len(new_password) < 6:
+        return redirect("/profile")
+
+    # 🔒 修复3：校验原密码
     conn = get_db()
     cur = conn.cursor()
+    cur.execute("SELECT password FROM users WHERE username=?", (username,))
+    row = cur.fetchone()
+    if not row or not check_password_hash(row["password"], old_password):
+        conn.close()
+        return redirect("/profile")
+
     cur.execute("UPDATE users SET password = ? WHERE username = ?",
                 (generate_password_hash(new_password), username))
     conn.commit()
