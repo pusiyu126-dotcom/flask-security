@@ -478,6 +478,33 @@ def dynamic_page():
     return render_template("index.html", page_content=page_content)
 
 
+# ─── 修改密码（含漏洞：无原密码校验 / 无 CSRF / 可改他人密码） ──
+
+@app.route("/change-password", methods=["POST"])
+def change_password():
+    # 只需登录即可
+    if "username" not in session:
+        return redirect("/login")
+
+    username = request.form.get("username", "")
+    new_password = request.form.get("new_password", "")
+
+    if not username or not new_password:
+        return redirect("/profile")
+
+    # ❌ 漏洞1：不校验原密码
+    # ❌ 漏洞2：不校验 session 用户与提交的 username 是否一致
+    # ❌ 漏洞3：无 CSRF Token 校验
+    conn = get_db()
+    cur = conn.cursor()
+    cur.execute("UPDATE users SET password = ? WHERE username = ?",
+                (generate_password_hash(new_password), username))
+    conn.commit()
+    conn.close()
+
+    return redirect("/profile")
+
+
 # ─── 登出 ──────────────────────────────────────────────────────────────
 
 @app.route("/logout")
